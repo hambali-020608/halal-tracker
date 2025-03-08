@@ -257,7 +257,7 @@ const chartData = computed(() => {
   width: 400px;
   max-width: 90%;
   background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  color: white; 
   padding: 20px;
   border-radius: 10px;
 }

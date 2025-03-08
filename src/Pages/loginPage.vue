@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref, reactive } from "vue";
 import { Motion } from "@motionone/vue";
-
+import { useRouter } from "vue-router";
+const router = useRouter()
 const user = reactive({});
 const email = ref("");
 const password = ref("");
@@ -16,7 +17,10 @@ const login = async () => {
       body: JSON.stringify({ email: email.value, password: password.value }),
     });
     const data = await response.json();
-    console.log(data);
+    if (data){
+      router.push('/activities')
+    }
+    
 
     if (data.user) {
       localStorage.setItem("token", data.user); // Simpan token di localStorage
@@ -32,37 +36,6 @@ const login = async () => {
   }
 };
 
-const fetchUserProfile = async () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Token tidak tersedia");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:5000/api/auth/profile", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const data = await response.json();
-    user.value = data; // Update reactive user object
-
-    console.log("Data Profil Pengguna", data);
-  } catch (error) {
-    console.error("Terjadi kesalahan saat mengambil profil", error);
-  }
-};
-
-onMounted(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    fetchUserProfile();
-  }
-});
 </script>
 
 <template>
